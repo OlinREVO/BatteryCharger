@@ -12,6 +12,15 @@ int main (void) {
     ADCSRB &= _BV(AREFEN);
     //Set internal reference voltage as AVcc
     ADMUX |= _BV(REFS0);
+    //ADC0 is PE2. Set as input pin
+    DDRE &= ~(_BV(PE2));
+
+    //No prescaling on PWM clock
+    TCCR0B |= (1 << CS00);
+    //Set up phase-correct PWM on OC0B
+    TCCR0A |= (1 << COM0B1) | _BV(WGM00);
+    TCCR0A &= ~(1 << COM0B0);
+    DDRE |= ( 1 << PE1 ); //set OC0B as output.
 
     for (;;) {
         //Reset ADC Channel
