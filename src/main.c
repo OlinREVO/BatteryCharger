@@ -1,4 +1,5 @@
 #define F_CPU (1000000L)
+#include "api.h"
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
@@ -22,6 +23,8 @@ int main (void) {
     TCCR0A &= ~(1 << COM0B0);
     DDRE |= ( 1 << PE1 ); //set OC0B as output.
 
+    initCAN(NODE_charger);
+
     for (;;) {
         //Reset ADC Channel
         ADMUX &= ~(0x1F);
@@ -34,4 +37,7 @@ int main (void) {
         uint16_t current = ADC;
     }
     return 1;
+}
+
+void handleCANmsg(uint8_t destID, uint8_t msgID, uint8_t* msg, uint8_t msgLen) {
 }
